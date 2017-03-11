@@ -3,19 +3,44 @@ HOST: https://app.pipefy.com
 
 # Pipefy API
 
-This is the Pipefy GraphQL API documentation, here you will find a guide how to use the API.
+This is the Pipefy API documentation, here you will find the guide on how to get started with the API.
 
-# Authentication
+# GraphQL
+
+GraphQL is a query language for APIs created by Facebook in 2012.
+
+**Refs**:
+* [facebook.github.io/graphql](http://facebook.github.io/graphql/)
+* [graphql.org](http://graphql.org/)
+
+Features:
+* Send a GraphQL query to the API and get exactly what you need, nothing more and nothing less. GraphQL queries always return predictable results. 
+* GraphQL queries access not just the properties of one resource but also smoothly follow references between them. While typical REST APIs require loading from multiple URLs, GraphQL APIs get all the data your app needs in a single request.
+
+After authenticate to [Pipefy](https://app.pipefy.com/), you can explore the API through the web interface:
+
+[app.pipefy.com/graphiql](https://app.pipefy.com/graphiql)
+![GraphiQL](https://raw.githubusercontent.com/pipefy/graphql-api-doc/master/pipefy_graphiql.png?token=ABKZf10D3_5J8dtbHbVupQQ9XTfVqGFHks5YzKrWwA%3D%3D)
+
+# Authentication (OAuth / JWT)
 
 Most of requests will require the OAuth Token, that must be send in request header.
 
-The personal OAuth Token is found at **User Settings** on _https://app.pipefy.com_
+The personal OAuth Token is found at **User Settings** on [Pipefy](https://app.pipefy.com)
+
+|HTTP Header      | Header Value              |
+|-----------------|---------------------------|
+|Content-Type     | _application/json_        |
+|**Authorization**|_Bearer <your_oauth_token>_|
 
 
-**`Authorization`** : `Bearer <your_oauth_token>`
+
+**Refs**:
+* [OAuth 2](https://oauth.net/2/)
+* [JWT](https://jwt.io/introduction/)
 
 
-# Root Queries 
+# GraphQL Root Queries 
 * Me (User info)
 * Organizations (**Optional** parameter: Organizations IDs)
 * Organization (**Required** parameter: Organization ID)
@@ -24,6 +49,10 @@ The personal OAuth Token is found at **User Settings** on _https://app.pipefy.co
 ## Me [/queries{?me}]
 
 Get information about yourself.
+
+**Request Body**
+
+`{ "query": "{ me { id, name, username, avatar_url, email, locale, time_zone } }" }`
 
 ### Get Me [POST]
 
@@ -61,6 +90,9 @@ Get information about yourself.
 ## Organizations [/queries{?organizations}]
 
 Get the list of Organizations
+
+**Request Body**
+`{ "query": "{ organizations{ id, name} }" }`
 
 ### Get organizations [POST]
 
