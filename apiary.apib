@@ -1,0 +1,90 @@
+FORMAT: 1A
+HOST: https://app.pipefy.com
+
+# Pipefy API
+
+This is the Pipefy GraphQL API documentation, here you will find a guide how to use the API.
+
+# Authentication
+
+Most of requests will require the OAuth Token, that must be send in request header.
+
+The personal OAuth Token is found at **User Settings** on _https://app.pipefy.com_
+
+
+**`Authorization`** : `Bearer <your_oauth_token>`
+
+
+# Root Queries 
+* Me (User info)
+* Organizations (Optional parameter: Organizations IDs)
+* Organization (Required parameter: Organization ID)
+* Pipes
+
+## Me [/queries{?me}]
+
+Get information about yourself.
+
+### Get Me [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "{ me { id, name, username, avatar_url, email, locale, time_zone } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "me": {
+                        "id": 1,
+                        "name": "Pipefy User",
+                        "username": "pipefy.user",
+                        "avatar_url": "https://avatar-images.pipefy.com/user-avatar.png",
+                        "email": "pipefy.user@pipefy.com",
+                        "locale": "en-US",
+                        "time_zone": "America/Los_Angeles"
+                    }
+                }
+            }
+
+
+
+
+## Organizations [/queries{?organizations}]
+
+Get list of Organizations
+
+### Get organizations [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "{ organizations{ id, name} }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "organizations": [
+                        {
+                            "id": "999",
+                            "name": "Pipefy Team"
+                        }
+                    ]
+                }
+            }
