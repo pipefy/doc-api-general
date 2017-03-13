@@ -50,9 +50,24 @@ The personal OAuth Token is found at **User Settings** on [Pipefy](https://app.p
 
 Get information about yourself.
 
+- User:
+    - ID
+    - Name
+    - Username
+    - Avatar URL
+    - Email
+    - Locale
+    - Timezone
+
 **Request Body**
 
-`{ "query": "{ me { id, name, username, avatar_url, email, locale, time_zone } }" }`
+```
+{ 
+    query: { 
+        me { id, name, username, avatar_url, email, locale, time_zone }
+    }
+}
+```
 
 ### Get Me [POST]
 
@@ -73,7 +88,7 @@ Get information about yourself.
             {
                 "data": {
                     "me": {
-                        "id": 1,
+                        "id": 9999,
                         "name": "Pipefy User",
                         "username": "pipefy.user",
                         "avatar_url": "https://avatar-images.pipefy.com/user-avatar.png",
@@ -89,10 +104,20 @@ Get information about yourself.
 
 ## Organizations [/queries{?organizations}]
 
-Get the list of Organizations
+Get the list of Organizations.
+
+- Organizations:
+    - ID
+    - Name
 
 **Request Body**
-`{ "query": "{ organizations{ id, name} }" }`
+```
+{ 
+    query: { 
+        organizations { id, name } 
+    }
+}
+```
 
 ### Get organizations [POST]
 
@@ -114,9 +139,89 @@ Get the list of Organizations
                 "data": {
                     "organizations": [
                         {
-                            "id": "999",
-                            "name": "Pipefy Team"
+                            "id": "9999",
+                            "name": "Pipefy"
                         }
                     ]
+                }
+            }
+            
+## Organization [/queries{?organization}]
+
+Get an Organization by Organization ID, with Pipes and Phases.
+
+- Organization:
+    - Name
+    - Pipes:
+        - Name
+        - Phases:
+            - Name
+
+**Request Body**
+```
+{ 
+    query: { 
+        organization(id: 9999) { 
+            name
+            pipes { 
+                name
+                phases { name } 
+            } 
+        } 
+    } 
+}
+```
+
+### Get organization by ID [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "{ organization(id: 1){ name, pipes { name, phases { name } } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "organization": {
+                        "name": "Pipefy",
+                        "pipes": [
+                            {
+                                "name": "Development Team",
+                                "phases": [
+                                    {
+                                        "name": "ToDo"
+                                    },
+                                    {
+                                        "name": "Doing"
+                                    },
+                                    {
+                                        "name": "Done"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "Technical Debts",
+                                "phases": [
+                                    {
+                                        "name": "To-do"
+                                    },
+                                    {
+                                        "name": "Doing"
+                                    },
+                                    {
+                                        "name": "Done"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 }
             }
