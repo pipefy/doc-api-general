@@ -194,7 +194,7 @@ Get an Organization by Organization ID, with Pipes and Phases.
                         "name": "Pipefy",
                         "pipes": [
                             {
-                                "name": "Development Team",
+                                "name": "Developers Team",
                                 "phases": [
                                     {
                                         "name": "ToDo"
@@ -208,7 +208,7 @@ Get an Organization by Organization ID, with Pipes and Phases.
                                 ]
                             },
                             {
-                                "name": "Technical Debts",
+                                "name": "Sales Team",
                                 "phases": [
                                     {
                                         "name": "To-do"
@@ -223,5 +223,125 @@ Get an Organization by Organization ID, with Pipes and Phases.
                             }
                         ]
                     }
+                }
+            }
+   
+## Pipes [/queries{?pipes}]
+
+Get Pipes by Pipes IDs, with Phases and Cards.
+
+- Pipes:
+    - ID
+    - Name
+    - Phases:
+        - Name
+        - Cards ([Relay Connections specs](https://facebook.github.io/relay/docs/graphql-connections.html)):
+            - Edges:
+                - Node (Cards):
+                    - ID (Card ID)
+                    - Title (Card Title)
+                
+
+
+**Request Body**
+```
+{
+    query: {
+        pipes(ids: [1]){
+            id
+            name
+            phases{
+                name
+                cards(first: 10){
+                    edges{
+                        node{
+                            id
+                            title
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+### Get Pipes by IDs [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "{ pipes(ids: [1]){ id, name, phases{ name, cards(first: 10){ edges{ nodes{ id, title } } } } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "pipes": [
+                        {
+                            "id": "1",
+                            "name": "Developers Team",
+                            "phases": [
+                                {
+                                    "name": "To-Do",
+                                    "cards": {
+                                        "edges": [
+                                            {
+                                                "node": {
+                                                    "id": "4",
+                                                    "title": "Tuning API Cache"
+                                                }
+                                            },
+                                            {
+                                                "node": {
+                                                    "id": "5",
+                                                    "title": "Measure API Performance =D"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Doing",
+                                    "cards": {
+                                        "edges": [
+                                            {   
+                                                "node": {
+                                                    "id": "3",
+                                                    "title": "Create API Documentation ;-)"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                },
+                                {
+                                    "name": "Done",
+                                    "cards": {
+                                        "edges": [
+                                            {
+                                                "node": {
+                                                    "id": "2",
+                                                    "title": "Improve API"
+                                                }
+                                            },
+                                            {
+                                                "node": {
+                                                    "id": "1",
+                                                    "title": "Measure API Performance =/"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 }
             }
