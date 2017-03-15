@@ -53,6 +53,9 @@ The personal OAuth Token is found at **User Settings** on [Pipefy](https://app.p
 
 # GraphQL Root Mutations
 * Create Card (**Required** parameter: Pipe ID)
+* Delete Card (**Required** parameter: Card ID)
+* Update Card (**Required** parameter: Card ID)
+* Move Card to Phase(**Required** parameters: Card ID, Destination Phase ID)
 
 ## Me [/queries{?me}]
 
@@ -789,11 +792,11 @@ Get a Card by Card ID, with Assignees, Child Relations, Fields ...
                 }
             }
             
-## createCard [/queries{?create_card}]
+## Create Card [/queries{?create_card}]
 
-The Endpoint to create a Card, in case of success a query is returned. When `fields_attributes` is passed as parameter, the `field_value` of first first_attribute replaces the card title. 
+The endpoint to create a Card, in case of success a query is returned. When `fields_attributes` is passed as parameter, the `field_value` of first field_attribute replaces the card title. 
 
-- Card's Parameter: 
+- Card's Parameters: 
     - Pipe ID
     - Title
     - Due Date
@@ -813,10 +816,10 @@ mutation {
                 title: "Card created by a mutation", 
                 due_date: "2017-01-15T09:05:06-02:00", 
                 assignee_ids: [7], 
-                fields_attributes:{field_id: 1, field_value: "This is a Field Value"}, 
+                fields_attributes:{ field_id: 1, field_value: "This is a Field Value"}, 
                 label_ids: [1]
-                }
-            )
+            }
+        )
     {
         card{
             id
@@ -830,7 +833,7 @@ mutation {
 }
 ```
 
-### createCard [POST]
+### createCard(input: params) [POST]
 
 + Request (application/json)
 
@@ -869,6 +872,161 @@ mutation {
                                     "value": "Charlie"
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+
+## Delete Card [/queries{?delete_card}]
+
+The endpoint to delete a Card, in case of success a query `"success": true` is returned. 
+
+- Card's Parameter: 
+    - Card ID
+    
+**Request Body**
+```
+mutation {
+    deleteCard(input: { id: 1} ) {
+        success
+    }
+}
+```
+
+### deleteCard(input: card_id) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ deleteCard(input: {id: 42}) { success } }" }
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "deleteCard": {
+                        "success": true
+                    }
+                }
+            }
+
+## Update Card [/queries{?update_card}]
+
+The endpoint to update a Card, in case of success a query is returned. 
+
+- Card's Parameters: 
+    - Card ID
+    - Title
+    - Due Date
+    - Assignee IDs
+    - Label IDs
+    
+**Request Body**
+```
+mutation {
+    updateCard(input: {id: 6, title: "New Title", due_date: "2017-01-10T11:15:06-02:00", assignee_ids: [5], label_ids: [2]}) {
+        card {
+            title
+            due_date
+            assignees { id, username }
+            labels { id, name }
+        }
+    }
+}
+```
+
+### updateCard(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ updateCard(input: {id: 6, title: \"New Title\", due_date: \"2017-01-10T11:15:06-02:00\", assignee_ids: [6], label_ids: [2]}) { card { title, due_date, assignees { id, username }, labels{ id, name }}}}" }
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updateCard": {
+                        "card": {
+                            "title": "New Title",
+                            "due_date": "2017-01-10T11:15:06-02:00",
+                            "assignees": [
+                                {
+                                    "id": "6",
+                                    "username": "john"
+                                }
+                            ],
+                            "labels": [
+                                {
+                                    "id": "2",
+                                    "name": "new label"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+
+## Move Card To Phase [/queries{?move_card_to_phase}]
+
+The endpoint to move a Card to a Phase, in case of success a card's query is returned. 
+
+- Parameters: 
+    - Card ID
+    - Destination Phase ID
+    
+**Request Body**
+```
+mutation {
+    moveCardToPhase(input: {card_id: 1, destination_phase_id: 3}) {
+        card{
+            title
+            current_phase{ id, name }
+        }
+        
+    }
+}
+```
+
+### moveCardToPhase(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ moveCardToPhase(input: {card_id: 15, destination_phase_id: 2}){ card{ title, current_phase{ id, name } } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "moveCardToPhase": {
+                        "card": {
+                            "title": "Bug 1: System Error",
+                            "current_phase": {
+                              "id": "2",
+                              "name": "Delivery"
+                            }
                         }
                     }
                 }
