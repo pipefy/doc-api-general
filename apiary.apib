@@ -1,5 +1,5 @@
 FORMAT: 1A
-HOST: https://app.pipefy.comd 
+HOST: https://app.pipefy.com
 
 
 # Pipefy API
@@ -70,6 +70,12 @@ The personal OAuth Token is found at **User Settings** on [Pipefy](https://app.p
 * Delete Phase (**Required** parameter: Phase ID)
 * Delete Phase Field (**Required** parameter: Phase Field ID)
 * Delete Pipe (**Required** parameter: Pipe ID)
+* Set Role (**Required** parameter: Member's)
+* Sign Up User (**Required** parameters: Email, Department Key, Name, Phone, Password)
+* Update Comment (**Required** parameters: Comment ID, Text)
+* Update Label (**Required** parameters: Label ID, Name, Color)
+* Update Organization (**Required** parameters: Organization ID, Name)
+* Update Phase (**Required** parameters: Phase ID, Name)
 
 
 ## Me [/queries{?me}]
@@ -1812,9 +1818,338 @@ mutation {
     
             {
                 "data": {
-                     "deletePipe": {
+                    "deletePipe": {
                         "card": {
                             "success": true
+                        }
+                    }
+                }
+            }
+
+## Set Role [/queries{?set_role}]
+
+Mutation to Set Role to an user, in case of success a query is returned.
+
+- Parameters:
+    - Organization ID
+    - Pipe ID
+    - Member:
+        - User ID
+        - Role Name
+
+**Request Body**
+```
+mutation {
+    setRole(input: {pipe_id: 5, organization_id: 1, member: {user_id: 4, role_name: "member" } }) {
+        member{
+            role_name
+            user{ username }
+        }
+    }
+}
+```
+
+### setRole(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { setRole(input: {pipe_id: 5, organization_id: 1, member: {user_id: 4, role_name: \"member\" } }) { member{ role_name, user{ username } } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "setRole": {
+                        "member": {
+                            "role_name": "member",
+                            "user": {
+                                "username": "dioguinho" 
+                            }
+                        }
+                    }
+                }
+            }
+
+## Sign Up User [/queries{?sign_up_user}]
+
+Mutation to Sign Up an User, in case of success a query is returned.
+
+- Parameters:
+    - Email
+    - Department_key
+    - Name
+    - Phone
+    - Password
+    - Client ID
+    - Signup Utm Source
+
+**Request Body**
+```
+mutation {
+    signUpUser(input: {email: "johnny_b_goode@pipefy.com", department_key: "sales_department", phone: "41 99966 3322", name: "Jhonny B. Goode", password: "abc123"} ) 
+    {
+        user{
+            name
+            email
+            username
+        }
+    }
+}
+```
+
+### signUpUser(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { signUpUser(input: {email: \"johnny_b_goode@pipefy.com\", department_key: \"sales_department\", phone: \"41 99966 3322\", name: \"Jhonny B. Goode\", password: \"abc123\"} ) { user{ username, name, email } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "setRole": {
+                        "member": {
+                            "role_name": "member",
+                            "user": {
+                                "name": "Jhonny B. Goode",
+                                "email": "johnny_b_goode@pipefy.com"
+                                "username": "johnny_b_goode" 
+                            }
+                        }
+                    }
+                }
+            }
+
+## Update Comment [/queries{?update_comment}]
+
+Mutation to Update a Comment, in case of success a query is returned.
+
+- Parameters:
+    - Comment ID
+    - Text
+
+**Request Body**
+```
+mutation {
+    updateComment(input: {id: 2, text: "Edit: I'm editing this comment"}) {
+        comment{
+            author_name
+            text
+        }
+    }
+}
+```
+
+### updateComment(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ updateComment(input: {id: 2, text: \"Edit: I'm editing this comment\"}){ comment { author_name, text } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updateComment": {
+                        "comment": {
+                            "author_name": "John",
+                            "text": "Edit: I'm editing this comment"
+                        }
+                    }
+                }
+            }
+
+## Update Label [/queries{?update_label}]
+
+Mutation to Update a Label, in case of success a query is returned.
+
+- Parameters:
+    - Label ID
+    - Name
+    - Color
+
+**Request Body**
+```
+mutation {
+    updateLabel(input:{id: 12, color: "#000000", name: "Changed Name Label"}){
+        label{ name, color }
+    }
+}
+```
+
+### updateLabel(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { updateLabel(input:{id: 12, color: \"#000000\", name: \"Changed Name Label\"}){ label{ name, color } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updateLabel": {
+                        "label": {
+                            "name": "Changed Name Label",
+                            "color": "#000000"
+                        }
+                    }
+                }
+            }
+
+## Update Organization [/queries{?update_organization}]
+
+Mutation to Update a Organization, in case of success a query is returned.
+
+- Parameters:
+    - Organization ID
+    - Name
+    - Only Admin Can Invite Users
+    - Only Admin Can Create Pipes
+    - Force Omniauth To Normal Users
+
+**Request Body**
+```
+mutation{
+    updateOrganization(input:{id: 5, name: "Capsule Corp.", only_admin_can_invite_users: true }) {
+        organization{
+            name
+            only_admin_can_create_pipes
+            only_admin_can_invite_users
+            force_omniauth_to_normal_users
+        }
+    }
+}
+```
+
+### updateOrganization(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ updateOrganization(input:{id: 5, name: \"Capsule Corp.\", only_admin_can_invite_users: true }) { organization{ name, only_admin_can_create_pipes, only_admin_can_invite_users, force_omniauth_to_normal_users } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updateOrganization": {
+                        "organization": {
+                            "name": "Capsule Corp.",
+                            "only_admin_can_create_pipes": false,
+                            "only_admin_can_invite_users": true,
+                            "force_omniauth_to_normal_users": null
+                        }
+                    }
+                }
+            }
+
+## Update Phase [/queries{?update_phase}]
+
+Mutation to Update a Phase, in case of success a query is returned.
+
+- Parameters:
+    - Phase ID
+    - Name
+    - Done
+    - Lateness Time
+    - Description
+    - Only Admin Can Move To Previous
+    - Can Receive Card Directly From Draft
+
+**Request Body**
+```
+mutation{
+    updatePhase(input:{id: 2, name: "Available to test", only_admin_can_move_to_previous: false, can_receive_card_directly_from_draft: true, description: "I'm editing this phase"}) {
+        phase{
+            name
+            cards_count
+            cards{ edges{ node{ title } } }
+            cards_can_be_moved_to_phases{ id, name }
+        }
+    }
+}
+```
+
+### updatePhase(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ updatePhase(input:{id: 2, name: \"Available to test\", only_admin_can_move_to_previous: false, can_receive_card_directly_from_draft: true, description: \"I'm editing this phase\"  }) { phase{ name, cards_count, cards{ edges{ node{ title } } }, cards_can_be_moved_to_phases{ id, name } } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updatePhase": {
+                        "phase": {
+                            "name": "Available to test",
+                            "cards_count": 1,
+                            "cards": {
+                                "edges": [
+                                    {
+                                        "node": {
+                                            "title": "Draft"
+                                        }
+                                    }
+                                ]
+                            },
+                            "cards_can_be_moved_to_phases": [
+                                {
+                                    "id": "3",
+                                    "name": "Prepare"
+                                },
+                                {
+                                    "id": "4",
+                                    "name": "Delivered"
+                                }
+                            ]
                         }
                     }
                 }
