@@ -666,7 +666,7 @@ Get Cards by Pipe ID, with Assignees, Child Relations, Fields ...
                         "edges": [
                             {
                                 "node": {
-                                    "title": "sdfsafsadfsadf",
+                                    "title": "Bug: Server was deleted",
                                     "assignees": [
                                         {
                                             "id": "6",
@@ -693,14 +693,14 @@ Get Cards by Pipe ID, with Assignees, Child Relations, Fields ...
                                         },
                                         {
                                             "name": "Customer Name",
-                                            "value": "sdfsafsadfsadf",
+                                            "value": "Mr. Page",
                                             "phase_field": {
                                                 "id": "customer_name"
                                             }
                                         },
                                         {
                                             "name": "Customer Email",
-                                            "value": "sfasf@sdfasfdasdf.com",
+                                            "value": "jimmy_page@guitar.com",
                                             "phase_field": {
                                                 "id": "customer_email"
                                             }
@@ -770,7 +770,7 @@ Get a Card by Card ID, with Assignees, Child Relations, Fields ...
             {
                 "data": {
                     "card": {
-                        "title": "sdfsafsadfsadf",
+                        "title": "Bug 2: Wrong Label",
                         "assignees": [
                             {
                                 "id": "6",
@@ -797,14 +797,14 @@ Get a Card by Card ID, with Assignees, Child Relations, Fields ...
                             },
                             {
                                 "name": "Customer Name",
-                                "value": "sdfsafsadfsadf",
+                                "value": "Robert Plant",
                                 "phase_field": {
                                     "id": "customer_name"
                                 }
                             },
                             {
                                 "name": "Customer Email",
-                                "value": "sfasf@sdfasfdasdf.com",
+                                "value": "robert_plant@vocal.com",
                                 "phase_field": {
                                     "id": "customer_email"
                                 }
@@ -1853,7 +1853,14 @@ Mutation to Set Role to an user, in case of success a query is returned.
 **Request Body**
 ```
 mutation {
-    setRole(input: {pipe_id: 5, organization_id: 1, member: {user_id: 4, role_name: "member" } }) {
+    setRole(
+        input: {
+            pipe_id: 5, 
+            organization_id: 1, 
+            member: { user_id: 4, role_name: "member" } 
+        }
+    ) 
+    {
         member{
             role_name
             user{ username }
@@ -1997,7 +2004,14 @@ Mutation to update a Organization, in case of success a query is returned.
 **Request Body**
 ```
 mutation{
-    updateOrganization(input:{id: 5, name: "Capsule Corp.", only_admin_can_invite_users: true }) {
+    updateOrganization(
+        input: {
+            id: 5, 
+            name: "Capsule Corp.", 
+            only_admin_can_invite_users: true 
+        }
+    ) 
+    {
         organization{
             name
             only_admin_can_create_pipes
@@ -2053,7 +2067,16 @@ Mutation to update a Phase, in case of success a query is returned.
 **Request Body**
 ```
 mutation{
-    updatePhase(input:{id: 2, name: "Available to test", only_admin_can_move_to_previous: false, can_receive_card_directly_from_draft: true, description: "I'm editing this phase"}) {
+    updatePhase(
+        input: {
+            id: 2, 
+            name: "Available to test", 
+            only_admin_can_move_to_previous: false, 
+            can_receive_card_directly_from_draft: true, 
+            description: "I'm editing this phase"
+        }
+    )
+    {
         phase{
             name
             cards_count
