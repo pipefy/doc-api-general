@@ -1938,9 +1938,9 @@ mutation {
 
 ## Update Comment [/queries{?update_comment}]
 
-Mutation to Update a Comment, in case of success a query is returned.
+Mutation to update a Comment, in case of success a query is returned.
 
-- Parameters:
+- Comment's Parameters:
     - Comment ID
     - Text
 
@@ -1985,9 +1985,9 @@ mutation {
 
 ## Update Label [/queries{?update_label}]
 
-Mutation to Update a Label, in case of success a query is returned.
+Mutation to update a Label, in case of success a query is returned.
 
-- Parameters:
+- Label's Parameters:
     - Label ID
     - Name
     - Color
@@ -2030,9 +2030,9 @@ mutation {
 
 ## Update Organization [/queries{?update_organization}]
 
-Mutation to Update a Organization, in case of success a query is returned.
+Mutation to update a Organization, in case of success a query is returned.
 
-- Parameters:
+- Organization's Parameters:
     - Organization ID
     - Name
     - Only Admin Can Invite Users
@@ -2084,9 +2084,9 @@ mutation{
 
 ## Update Phase [/queries{?update_phase}]
 
-Mutation to Update a Phase, in case of success a query is returned.
+Mutation to update a Phase, in case of success a query is returned.
 
-- Parameters:
+- Phase's Parameters:
     - Phase ID
     - Name
     - Done
@@ -2150,6 +2150,154 @@ mutation{
                                     "name": "Delivered"
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+
+## Update Phase Field [/queries{?update_phase_field}]
+
+Mutation to update a Phase Field, in case of success a query is returned.
+
+- Phase Field's Parameters:
+    - Phase ID
+    - Name
+    - Done
+    - Lateness Time
+    - Description
+    - Only Admin Can Move To Previous
+    - Can Receive Card Directly From Draft
+
+**Request Body**
+```
+mutation{
+    updatePhaseField(
+        input:{
+            id: "paid_value", 
+            index: 1.1, 
+            label: "Paid Value R$", 
+            required: false,
+            editable: false,
+            help: "Fill this field with paid value (R$)",
+            description: "The Paid Value with currency symbol",
+            sync_with_card: true
+        }
+    )
+    { 
+        phase_field{ 
+            id,
+            label,
+            required,
+            description,
+            synced_with_card,
+            phase{ name }
+        }
+    }
+}
+```
+
+### updatePhaseField(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { updatePhaseField(input: {id: \"paid_value\", index: 1.1, label: \"Paid Value R$\", required: false, editable: false, help: \"Fill this field with paid value (R$)\", description: \"The Paid Value with currency symbol\", sync_with_card: true}) { phase_field { id label required description synced_with_card phase { name } } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updatePhaseField": {
+                        "phase_field": {
+                            "id": "paid_value",
+                            "label": "Paid Value R$"
+                            "required": false,
+                            "description": "The Paid Value with currency symbol",
+                            "synced_with_card": false,
+                            "phase": {
+                                "name": "Payment"
+                            }
+                        }
+                    }
+                }
+            }
+
+## Update Pipe [/queries{?update_pipe}]
+
+Mutation to update a Pipe, in case of success a query is returned.
+
+- Pipe's Parameters:
+    - ID
+    - Name
+    - Icon
+    - Title Field ID
+    - Expiration Time By Unit
+    - Expiration Unit
+    - Public
+    - Only Assignees Can Edit Cards
+    - Only Admin Can Remove Cards
+    - Anyone Can Create Card
+
+**Request Body**
+```
+mutation{
+    updatePipe(
+        input:{ 
+            id: 1, 
+            name: "Pizza Order", 
+            anyone_can_create_card: true, 
+            public: true, 
+            only_admin_can_remove_cards: true, 
+            only_assignees_can_edit_cards: true
+        }
+    )
+    {
+        pipe{
+            name
+            public
+            only_assignees_can_edit_cards
+            only_admin_can_remove_cards
+            title_field{ id, synced_with_card }     
+        }
+    }
+}
+```
+
+### updatePipe(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ updatePipe(input:{ id: 1, name: \"Pizza Order\", anyone_can_create_card: true, public: true, only_admin_can_remove_cards: true, only_assignees_can_edit_cards: true}) { pipe{ name public only_assignees_can_edit_cards only_admin_can_remove_cards title_field{ id synced_with_card } } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updatePipe": {
+                        "pipe": {
+                            "name": "Pizza Order",
+                            "public": true,
+                            "only_assignees_can_edit_cards": true,
+                            "only_admin_can_remove_cards": true,
+                            "title_field": {
+                                "id": "customer_name",
+                                "synced_with_card": false
+                            }
                         }
                     }
                 }
