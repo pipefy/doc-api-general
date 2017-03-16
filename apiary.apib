@@ -71,7 +71,6 @@ The personal OAuth Token is found at **User Settings** on [Pipefy](https://app.p
 * Delete Phase Field (**Required** parameter: Phase Field ID)
 * Delete Pipe (**Required** parameter: Pipe ID)
 * Set Role (**Required** parameter: Member's)
-* Sign Up User (**Required** parameters: Email, Department Key, Name, Phone, Password)
 * Update Comment (**Required** parameters: Comment ID, Text)
 * Update Label (**Required** parameters: Label ID, Name, Color)
 * Update Organization (**Required** parameters: Organization ID, Name)
@@ -839,7 +838,10 @@ mutation {
                 title: "Card created by a mutation", 
                 due_date: "2017-01-15T09:05:06-02:00", 
                 assignee_ids: [7], 
-                fields_attributes:{ field_id: "label_name", field_value: "This is a Field Value"}, 
+                fields_attributes: {
+                    field_id: "label_name",
+                    field_value: "This is a Field Value"
+                }, 
                 label_ids: [1]
             }
         )
@@ -954,7 +956,16 @@ The endpoint to update a Card, in case of success a query is returned.
 **Request Body**
 ```
 mutation {
-    updateCard(input: {id: 6, title: "New Title", due_date: "2017-01-10T11:15:06-02:00", assignee_ids: [5], label_ids: [2]}) {
+    updateCard(input: 
+        {
+            id: 6, 
+            title: "New Title", 
+            due_date: "2017-01-10T11:15:06-02:00", 
+            assignee_ids: [5], 
+            label_ids: [2]
+            }
+    )
+    {
         card {
             title
             due_date
@@ -1874,64 +1885,6 @@ mutation {
                             "role_name": "member",
                             "user": {
                                 "username": "dioguinho" 
-                            }
-                        }
-                    }
-                }
-            }
-
-## Sign Up User [/queries{?sign_up_user}]
-
-Mutation to Sign Up an User, in case of success a query is returned.
-
-- Parameters:
-    - Email
-    - Department_key
-    - Name
-    - Phone
-    - Password
-    - Client ID
-    - Signup Utm Source
-
-**Request Body**
-```
-mutation {
-    signUpUser(input: {email: "johnny_b_goode@pipefy.com", department_key: "sales_department", phone: "41 99966 3322", name: "Jhonny B. Goode", password: "abc123"} ) 
-    {
-        user{
-            name
-            email
-            username
-        }
-    }
-}
-```
-
-### signUpUser(input: params) [POST]
-
-+ Request (application/json)
-
-    + Headers
-
-            Authorization: Bearer your_oauth_token
-
-    + Body
-
-            { "query": "mutation { signUpUser(input: {email: \"johnny_b_goode@pipefy.com\", department_key: \"sales_department\", phone: \"41 99966 3322\", name: \"Jhonny B. Goode\", password: \"abc123\"} ) { user{ username, name, email } } }" }
-            
-+ Response 200 (application/json; charset=utf-8)
-    
-    + Body
-    
-            {
-                "data": {
-                    "setRole": {
-                        "member": {
-                            "role_name": "member",
-                            "user": {
-                                "name": "Jhonny B. Goode",
-                                "email": "johnny_b_goode@pipefy.com"
-                                "username": "johnny_b_goode" 
                             }
                         }
                     }
