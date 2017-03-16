@@ -55,7 +55,15 @@ The personal OAuth Token is found at **User Settings** on [Pipefy](https://app.p
 * Create Card (**Required** parameter: Pipe ID)
 * Delete Card (**Required** parameter: Card ID)
 * Update Card (**Required** parameter: Card ID)
-* Move Card to Phase(**Required** parameters: Card ID, Destination Phase ID)
+* Move Card to Phase (**Required** parameters: Card ID, Destination Phase ID)
+* Update CardField (**Required** parameter: Card Field ID)
+* Add Comment (**Required** parameters: Card ID, Text)
+* Add Phase (**Required** parameters: Pipe ID, Name)
+* Clone Pipe (**Required** parameters: Organization ID, Pipe Templates IDs)
+* Create Label (**Required** parameters: Pipe ID, Name, Color)
+* Create Organization (**Required** parameters: Industry, Name)
+* Create Phase Field (**Required** parameters: Phase ID, Type ID, Label, Index)
+* Create Pipe (**Required** parameters: Organization ID, Name)
 
 ## Me [/queries{?me}]
 
@@ -816,7 +824,7 @@ mutation {
                 title: "Card created by a mutation", 
                 due_date: "2017-01-15T09:05:06-02:00", 
                 assignee_ids: [7], 
-                fields_attributes:{ field_id: 1, field_value: "This is a Field Value"}, 
+                fields_attributes:{ field_id: "label_name", field_value: "This is a Field Value"}, 
                 label_ids: [1]
             }
         )
@@ -843,7 +851,7 @@ mutation {
 
     + Body
 
-            { "query": "mutation{ createCard(input: {pipe_id: 1, title: \"My card created by mutation\", assignee_ids: [6], fields_attributes:{field_id: 1, field_value: \"Charlie\"}}) { card {id, title, due_date, assignees{id, username}, fields {name, value} }}}" }
+            { "query": "mutation{ createCard(input: {pipe_id: 1, title: \"My card created by mutation\", assignee_ids: [6], fields_attributes:{field_id: \"label_name\", field_value: \"Charlie\"}}) { card {id, title, due_date, assignees{id, username}, fields {name, value} }}}" }
 
 + Response 200 (application/json; charset=utf-8)
     
@@ -1027,6 +1035,527 @@ mutation {
                               "id": "2",
                               "name": "Delivery"
                             }
+                        }
+                    }
+                }
+            }
+
+## Update Card Field [/queries{?update_card_field}]
+
+Mutation to update a Card Field, in case of success a query is returned. 
+
+- Card Field's Parameters: 
+    - Field ID
+    - Card ID
+    - New Value
+    
+**Request Body**
+```
+mutation {
+    updateCardField(input:{card_id: 38, field_id: "paid_value", new_value: 9.35}){
+        card {
+            title
+            current_phase { 
+                name
+                fields{ id, label}
+            }
+            fields { name, value }
+        }
+    }
+}
+```
+
+### updateCardField(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ updateCardField(input:{card_id: 38, field_id: \"paid_value\", new_value: "9.32"}){ card{ title, current_phase { name, fields {id, label} }, fields{ name, value } } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                    "updateCardField": {
+                        "card": {
+                            title": "Product 1",
+                            "current_phase": {
+                                "name": "Delivery"
+                                "fields": [
+                                    {
+                                        "id": "paid_value",
+                                        "label": "Paid Value"
+                                    }
+                                ],
+                            }
+                            "fields": [
+                                {
+                                    "name": "Paid Value",
+                                    "value": "9.32"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+
+## Add Comment [/queries{?add_comment}]
+
+Mutation to Add a Comment to a Card, in case of success a query is returned.
+
+- Parameters:
+    - Card ID
+    - Text
+
+**Request Body**
+```
+mutation {
+    addComment(input: {card_id: 15, text: "PipeFy is awesome! And I added this comment"}) {
+        comment { text }
+    }
+}
+```
+
+### addComment(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { addComment(input: {card_id: 15, text: \"PipeFy is awesome! And I added this comment\"}) { comment { text } } }" }
+            
++ Response 200 (application/json; charset=utf-8)
+    
+    + Body
+    
+            {
+                "data": {
+                     "addComment": {
+                        "card": {
+                            "comment": {
+                                "text": "PipeFy is awesome! And I added this comment"
+                            }
+                        }
+                    }
+                }
+            }
+
+## Add Phase [/queries{?add_phase}]
+
+Mutation to add a Phase in a Pipe, in case of success a query is returned.
+
+- Parameters:
+    - Pipe ID
+    - Name
+    - Done
+    - Lateness Time
+    - Description
+    - Only Admin Can Move To Previous
+    - Can Receive Card Directly From Draft
+
+**Request Body**
+
+```
+mutation { 
+    addPhase(
+        input: {
+            pipe_id: 1, 
+            name: "To be Finished", 
+            description: "This phase is to be used for cards that are to be finished",
+            done: true, 
+            only_admin_can_move_to_previous: true,
+            can_receive_card_directly_from_draft: false
+            
+        }
+    ) 
+    { phase{ name } }
+}
+```
+
+### addPhase(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { addPhase(input: {pipe_id: 1, name: \"To be Finished\", description: \"This phase is to be used for cards that are to be finished\", done: true, only_admin_can_move_to_previous: true, can_receive_card_directly_from_draft: false}) { phase{ name } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "addPhase": {
+                        "phase": {
+                            "name": "To be Finished"
+                        }
+                    }
+                }
+            }
+
+## Clone Pipe [/queries{?clone_pipe}]
+
+Mutation to clone a Pipe, in case of success a query is returned.
+
+- Parameters:
+    - Organization ID
+    - Pipe Template IDs
+
+**Request Body**
+
+```
+mutation { 
+    clonePipes(input: {organization_id: 1, pipe_template_ids:[1, 2, 3]}){
+        pipes{ id, name } 
+    }
+}
+```
+
+### clonePipe(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ clonePipes(input: {organization_id: 1, pipe_template_ids:[1, 2, 3]}){ pipes{ id, name } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "clonePipes": {
+                        "pipes": [
+                            {
+                                "id": "1",
+                                "name": "Pizza Order (copy 1)"
+                            }
+                        ]
+                    }
+                }
+            }
+
+## Create Label [/queries{?create_label}]
+
+Mutation to create a Label, in case of success a query is returned.
+
+- Parameters:
+    - Pipe ID
+    - Name
+    - Color
+
+**Request Body**
+
+```
+mutation { 
+    createLabel(input: {pipe_id: 5, name: "My label", color: "#000000"}){
+        label{ 
+            id
+            name
+            color
+        }
+    }
+}
+```
+
+### createLabel(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { createLabel(input: {pipe_id: 5, name: \"My label\", color: \"#FFFF00\"}){ label{ id, name, color } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "createLabel": {
+                        "label": {
+                            "id": "1",
+                            "name": "My label",
+                            "color": "#000000"
+                        }
+                    }
+                }
+            }
+
+## Create Organization [/queries{?create_organization}]
+
+Mutation to create a Organization, in case of success a query is returned.
+
+- Organization's Parameters:
+    - Industry
+    - Name
+
+**Request Body**
+
+```
+mutation { 
+    createOrganization(input: {industry: "technology", name: "Oscorp"}){
+        organization{ 
+            id
+            name
+        }
+    }
+}
+```
+
+### createOrganization(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { createOrganization(input: {industry: \"technology\", name: \"Oscorp\"}){ organization{ id, name } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "createOrganization": {
+                        "organization": {
+                            "id": "1",
+                            "name": "Oscorp"
+                        }
+                    }
+                }
+            }
+
+## Create Phase Field [/queries{?create_phase_field}]
+
+Mutation to create a Phase Field, in case of success a query is returned.
+
+- PhaseField's Parameters:
+    - Phase ID
+    - Type ID
+    - Label
+    - Index
+    - Default Value
+    - Options
+    - Description
+    - Required
+    - Help
+    - Editable
+    - Can Create Database Record
+    - Can Have Multiple Database Records
+    - Database Field Layout
+    - Sync With Card
+
+**Request Body**
+
+```
+mutation { 
+    createPhaseField(
+        input: {
+            phase_id: 2,
+            type_id: "phone",
+            label: "Customer Phone",
+            index: 1.0,
+            description: "Customer phone field",
+            required: true,
+            help: "Fill up with customer phone number",
+            editable: false,
+            can_create_database_record: false,
+            can_have_multiple_database_records: false,
+            sync_with_card: false
+        }
+    )
+    {
+        phase_field{
+            id
+            type
+            description
+            phase{ name }
+        }
+    }
+}
+```
+
+### createPhaseField(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ createPhaseField(input: { phase_id: 4, type_id: \"phone\", label: \"Customer Home Phone \", index: 1.0, description: \"Customer Home phone field\", required: true, help: \"Fill up with customer home phone number\", editable: false, can_create_database_record: false, can_have_multiple_database_records: false, sync_with_card: false } ) { phase_field{ id, type, description, phase{ name } } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "createPhaseField": {
+                        "phase_field": {
+                            "id": "customer_home_phone",
+                            "type": "phone",
+                            "description": "Customer Home phone field",
+                            "phase": {
+                                "name": "Delivery"
+                            }
+                        }
+                    }
+                }
+            }
+
+## Create Pipe [/queries{?create_pipe}]
+
+Mutation to create a Pipe, in case of success a query is returned.
+
+- PhaseField's Parameters:
+    - Organization ID
+    - Name
+    - Labels:
+        - Name
+        - Color
+    - Members:
+        - User ID
+        - Role Name
+    - Start Form Fields:
+        - Phase ID
+        - Type ID
+        - Label
+        - Default Value
+        - Options
+        - Description
+        - Required
+        - Help
+        - Editable
+        - Can Create Database Record
+        - Can Have Multiple Database Records
+        - Database Field Layout
+        - Sync With Card
+    - Phases:
+        - Name
+        - Done
+
+**Request Body**
+
+```
+mutation{
+    createPipe(
+        input: {
+            organization_id: 5,
+            name: "Fyling Project",
+            labels:[
+                {
+                    name: "Single Label",
+                    color:"#FF0044"
+                }
+            ],
+            members:[
+                { 
+                  user_id: 3,
+                  role_name: "admin"
+                }
+            ],
+            phases:[
+                { name:"Building"},
+                { name: "Built", done: true}
+            ],
+            start_form_fields:[
+                {
+                    label: "Label of Fly Proj.",
+                    type_id: "phone"
+                }
+            ]
+        }
+    )
+    {
+        pipe{
+            name
+            members{ user{ username } }
+            phases{ name }
+            start_form_fields { id }
+        }
+    }
+}
+```
+
+### createPipe(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation{ createPipe( input: { organization_id: 5, name: \"Fyling Project\", labels:[ { name: \"Single Label\", color:\"#FF0044\" } ], members:[ { user_id: 3, role_name: \"admin\" } ], phases:[ { name:\"Building\"}, { name: \"Built\", done: true} ], start_form_fields:[ { label: \"Label of Fly Proj.\", type_id: \"phone\" } ] } ) { pipe{ name, members{ user{ username } } phases{ name } start_form_fields { id } } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "createPipe": {
+                        "pipe": {
+                            "name": "Fyling Project",
+                            "members": [
+                                {
+                                    "user": {
+                                        "username": "obama"
+                                    }
+                                },
+                                {
+                                    "user": {
+                                        "username": "john"
+                                    }
+                                }
+                            ],
+                            "phases": [
+                                {
+                                    "name": "Building"
+                                },
+                                {
+                                    "name": "Built"
+                                }
+                            ],
+                            "start_form_fields": [
+                                {
+                                    "id": "label_of_fly_proj"
+                                }
+                            ]
                         }
                     }
                 }
