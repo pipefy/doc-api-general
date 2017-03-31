@@ -48,6 +48,7 @@ The personal OAuth Token can be found at the **User Settings** page on [Pipefy](
 * Phase (**Required** parameter: Phase ID)
 * Cards (**Required** parameter: Pipe ID)
 * Card (**Required** parameter: Card ID)
+* Pipe Relations (**Required** parameter: PipeRelation IDs)
 
 # GraphQL Root Mutations
 * Create organization (**Required** parameters: industry, name)
@@ -75,7 +76,9 @@ The personal OAuth Token can be found at the **User Settings** page on [Pipefy](
 * Update comment (**Required** parameters: comment id, text)
 * Delete comment (**Required** parameter: comment id)
 * Set role (**Required** parameter: member's)
-Ma
+* Create pipe relation (**Required** parameters: name, parent id, child id, can create connected cards, can search connected cards, can connect multiple cards, child must exist to move parent, child must exist to finish parent, all children must be done to move parent, all children must be done to finish parent)
+* Update pipe relation (**Required** parameters: id, name, can create connected cards, can search connected cards, can connect multiple cards, child must exist to move parent, child must exist to finish parent, all children must be done to move parent, all children must be done to finish parent)
+* Delete pipe relation (**Required** parameter: pipe relation id)
 
 ## Me [/queries{?me}]
 
@@ -807,6 +810,97 @@ Get a card by card id, with assignees, child relations, fields ...
                 }
             }
 
+
+## Pipe Relations [/queries{?pipe_relations}]
+
+Get a list of pipe relations by their ids, with properties and the child name
+
+- pipe_relation:
+    - id
+    - name
+    - parent_id
+    - child_id
+    - can_create_connected_cards
+    - can_search_connected_cards
+    - can_connect_multiple_cards
+    - child_must_exist_to_move_parent
+    - child_must_exist_to_finish_parent
+    - all_children_must_be_done_to_finish_parent
+    - all_children_must_be_done_to_move_parent
+    - child_name
+
+**Request Body**
+```
+{
+    query {
+        pipe_relations(ids:[1, 2]) {
+            id
+            name
+            parent_id
+            child_id
+            can_create_connected_cards
+            can_search_connected_cards
+            can_connect_multiple_cards
+            child_must_exist_to_move_parent
+            child_must_exist_to_finish_parent
+            all_children_must_be_done_to_finish_parent
+            all_children_must_be_done_to_move_parent
+            child_name
+        }
+    }
+}
+```
+
+### Get pipe relation by id [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "{ pipe_relations(ids:[1, 2]) { id, name, parent_id, child_id, can_create_connected_cards, can_search_connected_cards, can_connect_multiple_cards, child_must_exist_to_move_parent, child_must_exist_to_finish_parent, all_children_must_be_done_to_finish_parent, all_children_must_be_done_to_move_parent, child_name } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "pipe_relations": [
+                        {
+                            "id": "1",
+                            "name": "Test",
+                            "parent_id": "1",
+                            "child_id": "2",
+                            "can_create_connected_cards": false,
+                            "can_search_connected_cards": true,
+                            "can_connect_multiple_cards": true,
+                            "child_must_exist_to_move_parent": false,
+                            "child_must_exist_to_finish_parent": true,
+                            "all_children_must_be_done_to_finish_parent": false,
+                            "all_children_must_be_done_to_move_parent": false,
+                            "child_name": "Test Pipe Relation"
+                        },
+                        {
+                            "id": "2",
+                            "name": "Edit: Pipe Relation",
+                            "parent_id": "1",
+                            "child_id": "3",
+                            "can_create_connected_cards": false,
+                            "can_search_connected_cards": true,
+                            "can_connect_multiple_cards": true,
+                            "child_must_exist_to_move_parent": true,
+                            "child_must_exist_to_finish_parent": false,
+                            "all_children_must_be_done_to_finish_parent": true,
+                            "all_children_must_be_done_to_move_parent": true,
+                            "child_name": "Developers team"
+                        }
+                    ]
+                }
+            }
 
 
 ## Create organization [/queries{?create_organization}]
@@ -2271,6 +2365,218 @@ mutation {
                                 "username": "dioguinho" 
                             }
                         }
+                    }
+                }
+            }
+            
+
+## Create pipe relation [/queries{?create_pipe_relation}]
+
+Mutation to create a pipe relation between two pipes, in case of success a query is returned.
+
+- parameters:
+    - parent_id
+    - child_id
+    - name
+    - child_must_exist_to_move_parent
+    - child_must_exist_to_finish_parent
+    - all_children_must_be_done_to_finish_parent
+    - all_children_must_be_done_to_move_parent
+    - can_create_connected_cards
+    - can_search_connected_cards
+    - can_connect_multiple_cards
+
+**Request Body**
+```
+mutation {
+    createPipeRelation(
+      input: {
+        parent_id: 1
+        child_id: 2
+        name: "Pipe Connection"
+        child_must_exist_to_move_parent: true
+        child_must_exist_to_finish_parent: false
+        all_children_must_be_done_to_finish_parent: true
+        all_children_must_be_done_to_move_parent: true
+        can_create_connected_cards: false
+        can_search_connected_cards: true
+        can_connect_multiple_cards: true
+      }
+    ) {
+        pipe_relation {
+          id
+          name
+          parent_id
+          child_id
+          can_create_connected_cards
+          can_search_connected_cards
+          can_connect_multiple_cards
+          child_must_exist_to_move_parent
+          child_must_exist_to_finish_parent
+          all_children_must_be_done_to_move_parent
+          all_children_must_be_done_to_finish_parent
+        }
+    }
+}
+```
+
+### createPipeRelation(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { createPipeRelation(input: { parent_id: 1, child_id: 2, name: \"Pipe Connection\", child_must_exist_to_move_parent: true, child_must_exist_to_finish_parent: false, all_children_must_be_done_to_finish_parent: true, all_children_must_be_done_to_move_parent: true, can_create_connected_cards: false, can_search_connected_cards: true, can_connect_multiple_cards: true }) { pipe_relation { id, name, parent_id, child_id, can_create_connected_cards, can_search_connected_cards, can_connect_multiple_cards, child_must_exist_to_move_parent, child_must_exist_to_finish_parent, all_children_must_be_done_to_move_parent, all_children_must_be_done_to_finish_parent } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "createPipeRelation": {
+                        "pipe_relation": {
+                            "id": "10",
+                            "name": "Pipe Connection",
+                            "parent_id": "1",
+                            "child_id": "2",
+                            "can_create_connected_cards": false,
+                            "can_search_connected_cards": true,
+                            "can_connect_multiple_cards": true,
+                            "child_must_exist_to_move_parent": true,
+                            "child_must_exist_to_finish_parent": false,
+                            "all_children_must_be_done_to_move_parent": true,
+                            "all_children_must_be_done_to_finish_parent": true
+                        }
+                    }
+                }
+            }
+
+
+## Update pipe relation [/queries{?update_pipe_relation}]
+
+Mutation to update a pipe relation, in case of success a query is returned.
+
+- pipe relation's parameters:
+    - id
+    - name
+    - child_must_exist_to_move_parent
+    - child_must_exist_to_finish_parent
+    - all_children_must_be_done_to_finish_parent
+    - all_children_must_be_done_to_move_parent
+    - can_create_connected_cards
+    - can_search_connected_cards
+    - can_connect_multiple_cards
+
+**Request Body**
+```
+mutation {
+  updatePipeRelation(
+    input: {
+      id: 1
+      name: "Edit: Pipe Connection"
+      child_must_exist_to_move_parent: true
+      child_must_exist_to_finish_parent: false
+      all_children_must_be_done_to_finish_parent: true
+      all_children_must_be_done_to_move_parent: true
+      can_create_connected_cards: false
+      can_search_connected_cards: true
+      can_connect_multiple_cards: true
+    }
+  ) {
+      pipe_relation {
+        id
+        name
+        parent_id
+        child_id
+        can_create_connected_cards
+        can_search_connected_cards
+        can_connect_multiple_cards
+        child_must_exist_to_move_parent
+        child_must_exist_to_finish_parent
+        all_children_must_be_done_to_move_parent
+        all_children_must_be_done_to_finish_parent
+      }
+  }
+}
+```
+
+### updatePipeRelation(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { updatePipeRelation(input: { id: 1, name: \"Edit: Pipe Connection\", child_must_exist_to_move_parent: true, child_must_exist_to_finish_parent: false, all_children_must_be_done_to_finish_parent: true, all_children_must_be_done_to_move_parent: true, can_create_connected_cards: false, can_search_connected_cards: true, can_connect_multiple_cards: true }) { pipe_relation { id, name, parent_id, child_id, can_create_connected_cards, can_search_connected_cards, can_connect_multiple_cards, child_must_exist_to_move_parent, child_must_exist_to_finish_parent, all_children_must_be_done_to_move_parent, all_children_must_be_done_to_finish_parent } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "updatePipeRelation": {
+                        "pipe_relation": {
+                            "id": "10",
+                            "name": "Edit: Pipe Connection",
+                            "parent_id": "1",
+                            "child_id": "2",
+                            "can_create_connected_cards": false,
+                            "can_search_connected_cards": true,
+                            "can_connect_multiple_cards": true,
+                            "child_must_exist_to_move_parent": true,
+                            "child_must_exist_to_finish_parent": false,
+                            "all_children_must_be_done_to_move_parent": true,
+                            "all_children_must_be_done_to_finish_parent": true
+                        }
+                    }
+                }
+            }
+
+## Delete pipe relation [/queries{?delete_pipe_relation}]
+
+Mutation to delete a pipe relation, in case of success a query `"success": true` is returned.
+
+- parameter:
+    - pipe relation id
+
+**Request Body**
+```
+mutation {
+    deleteComment(input: {id: 1}) {
+        success
+    }
+}
+```
+
+### deletePipeRelation(input: id) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { deletePipeRelation(input: {id: 1}) { success } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "deletePipeRelation": {
+                        "success": true
                     }
                 }
             }
