@@ -79,6 +79,7 @@ The personal OAuth Token can be found at the **User Settings** page on [Pipefy](
 * Create pipe relation (**Required** parameters: name, parent id, child id, can create connected cards, can search connected cards, can connect multiple cards, child must exist to move parent, child must exist to finish parent, all children must be done to move parent, all children must be done to finish parent)
 * Update pipe relation (**Required** parameters: id, name, can create connected cards, can search connected cards, can connect multiple cards, child must exist to move parent, child must exist to finish parent, all children must be done to move parent, all children must be done to finish parent)
 * Delete pipe relation (**Required** parameter: pipe relation id)
+* Create webhook (**Required** parameter: pipe or table relation id, name, url, actions)
 
 ## Me [/queries{?me}]
 
@@ -2551,7 +2552,7 @@ Mutation to delete a pipe relation, in case of success a query `"success": true`
 **Request Body**
 ```
 mutation {
-    deleteComment(input: {id: 1}) {
+    deletePipeRelation(input: {id: 1}) {
         success
     }
 }
@@ -2576,6 +2577,184 @@ mutation {
             {
                 "data": {
                     "deletePipeRelation": {
+                        "success": true
+                    }
+                }
+            }
+
+## Create webhook [/queries{?create_webhook}]
+
+Mutation to create a webhook, in case of success a query is returned.
+
+- parameters:
+    - pipe_id
+    - table_id
+    - name
+    - email
+    - url
+    - actions
+    - headers
+
+**Request Body**
+```
+mutation {
+    createWebhook(
+      input: {
+        pipe_id: 1
+        name: "My Integration"
+        email: "examepl@email.com"
+        url: "http://example.com/end_point/to/post"
+        actions: ["card.create", "card.move"]
+        headers: "{\"Custom-Header\": \"in json format\"}"
+      }
+    ) {
+        webhooks {
+          id
+          name
+          email
+          url
+          actions
+          headers
+        }
+    }
+}
+```
+
+### createPipeRelation(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { createPipeRelation(input: { pipe_id: 1, name: \"My Integration\", email: \"examepl@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\"Custom-Header\": \"in json format\"}\" }) { webhooks { id, name, email, url, actions, headers } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "createWebhook": {
+                        "webhook": {
+                            "id": "10",
+                            name: "My Integration",
+                            email: "examepl@email.com",
+                            url: "http://example.com/end_point/to/post",
+                            actions: ["card.create", "card.move"],
+                            headers: "{\"Custom-Header\": \"in json format\"}"
+                        }
+                    }
+                }
+            }
+
+
+## Update webhook [/queries{?update_webhook}]
+
+Mutation to update a webhook, in case of success a query is returned.
+
+- webhook's parameters:
+    - id
+    - name
+    - email
+    - url
+    - actions
+    - headers
+
+**Request Body**
+```
+mutation {
+  updateWebhook(
+    input: {
+      id: 10
+      name: "My Integration"
+      email: "examepl@email.com"
+      url: "http://example.com/end_point/to/post"
+      actions: ["card.create", "card.move"]
+      headers: "{\"Custom-Header\": \"in json format\"}"
+    }
+  ) {
+    webhooks {
+      id
+      name
+      email
+      url
+      actions
+      headers
+    }
+  }
+}
+```
+
+### updateWebhook(input: params) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { updateWebhook(input: { id: 10, name: \"My Integration\", email: \"examepl@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\"Custom-Header\": \"in json format\"}\" }) { webhook { id, name, email, url, actions, headers } } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "updateWebhook": {
+                        "webhook": {
+                            "id": "10",
+                            "name": "My Integration",
+                            "email": "examepl@email.com",
+                            "url": "http://example.com/end_point/to/post",
+                            "actions": ["card.create", "card.move"],
+                            "headers": "{\"Custom-Header\": \"in json format\"}"
+                        }
+                    }
+                }
+            }
+
+## Delete webhook [/queries{?delete_webhook}]A
+
+Mutation to delete a webhook, in case of success a query `"success": true` is returned.
+
+- parameter:
+    - webhook id
+
+**Request Body**
+```
+mutation {
+    deleteWebhook(input: { id: 10 }) {
+        success
+    }
+}
+```
+
+### deleteWebhook(input: id) [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer your_oauth_token
+
+    + Body
+
+            { "query": "mutation { deleteWebhook(input: { id: 10 }) { success } }" }
+
++ Response 200 (application/json; charset=utf-8)
+
+    + Body
+
+            {
+                "data": {
+                    "deleteWebhook": {
                         "success": true
                     }
                 }
