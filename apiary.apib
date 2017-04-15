@@ -4,6 +4,8 @@ HOST: https://app.pipefy.com
 
 # Pipefy API
 
+If you are using the old version of our API you can find the more about it [here](https://pipefy.gitbooks.io/pipefy-api-docs/content/index.html).
+
 This is Pipefy's API documentation. Here you will find the guidelines for getting started with the API.
 
 # GraphQL
@@ -27,12 +29,12 @@ After authenticating to [Pipefy](https://app.pipefy.com/), you can explore the A
 
 Most requests will require the OAuth Token, that must be sent in the request header.
 
-The personal OAuth Token can be found at the **User Settings** page on [Pipefy](https://app.pipefy.com)
+The **personal access token** can be found at the **User Settings** page in [Pipefy](https://app.pipefy.com/tokens)
 
 |HTTP Header      | Header Value              |
 |-----------------|---------------------------|
 |Content-Type     | _application/json_        |
-|**Authorization**|_Bearer <your_oauth_token>_|
+|**Authorization**|_Bearer <your_personal_access_token>_|
 
 **Refs**:
 * [OAuth 2](https://oauth.net/2/)
@@ -110,7 +112,7 @@ Get information about yourself.
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -157,7 +159,7 @@ Get the list of Organizations.
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -210,7 +212,7 @@ Get an organization by organization id, with pipes and phases.
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -302,7 +304,7 @@ Get pipes by pipes ids, with phases and cards.
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -420,7 +422,7 @@ Get a pipe by pipe id, with phases and cards.
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -543,7 +545,7 @@ Get a phase by phase id, with cards, fields and cards cane be moved to phases.
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -647,7 +649,7 @@ Get cards by pipe id, with assignees, child relations, fields ...
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -754,7 +756,7 @@ Get a card by card id, with assignees, child relations, fields ...
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -858,7 +860,7 @@ Get a list of pipe relations by their ids, with properties and the child name
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -931,7 +933,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -990,7 +992,7 @@ mutation{
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1035,7 +1037,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1079,7 +1081,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1182,7 +1184,7 @@ mutation{
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1274,7 +1276,7 @@ mutation{
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1323,7 +1325,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1381,7 +1383,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1443,7 +1445,7 @@ mutation{
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1505,7 +1507,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1581,7 +1583,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1653,7 +1655,7 @@ mutation{
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1702,7 +1704,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1751,7 +1753,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1797,7 +1799,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1840,7 +1842,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1909,7 +1911,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -1987,7 +1989,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2042,7 +2044,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2087,7 +2089,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2142,7 +2144,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2200,7 +2202,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2248,7 +2250,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2291,7 +2293,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2347,7 +2349,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2427,7 +2429,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2512,7 +2514,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2564,7 +2566,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2626,7 +2628,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2695,7 +2697,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
@@ -2742,7 +2744,7 @@ mutation {
 
     + Headers
 
-            Authorization: Bearer your_oauth_token
+            Authorization: Bearer your_personal_access_token
 
     + Body
 
