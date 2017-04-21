@@ -1884,10 +1884,9 @@ mutation {
                 title: "Card created by a mutation", 
                 due_date: "2017-01-15T09:05:06-02:00", 
                 assignee_ids: [7], 
-                fields_attributes: {
-                    field_id: "label_name",
-                    field_value: "This is a Field Value"
-                }, 
+                fields_attributes: [
+                    { field_id: "label_name", field_value: "This is a Field Value" }
+                ],
                 label_ids: [1]
             }
         )
