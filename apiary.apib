@@ -2620,7 +2620,7 @@ mutation {
 }
 ```
 
-### createPipeRelation(input: params) [POST]
+### createWebhook(input: params) [POST]
 
 + Request (application/json)
 
@@ -2630,7 +2630,7 @@ mutation {
 
     + Body
 
-            { "query": "mutation { createPipeRelation(input: { pipe_id: 1, name: \"My Integration\", email: \"examepl@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\"Custom-Header\": \"in json format\"}\" }) { webhook { id, name, email, url, actions, headers } } }" }
+            { "query": "mutation { createWebhook(input: { pipe_id: 1, name: \"My Integration\", email: \"example@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\\\"Custom-Header\\\": \\\"in json format\\\"}\" }) { webhook { id, name, email, url, actions, headers } } }" }
 
 + Response 200 (application/json; charset=utf-8)
 
@@ -2699,7 +2699,7 @@ mutation {
 
     + Body
 
-            { "query": "mutation { updateWebhook(input: { id: 10, name: \"My Integration\", email: \"examepl@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\"Custom-Header\": \"in json format\"}\" }) { webhook { id, name, email, url, actions, headers } } }" }
+            { "query": "mutation { updateWebhook(input: { id: 10, name: \"My Integration\", email: \"examepl@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\\\"Custom-Header\\\": \\\"in json format\\\"}\" }) { webhook { id, name, email, url, actions, headers } } }" }
 
 + Response 200 (application/json; charset=utf-8)
 
