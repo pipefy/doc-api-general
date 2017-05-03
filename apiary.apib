@@ -2608,7 +2608,7 @@ mutation {
         headers: "{\"Custom-Header\": \"in json format\"}"
       }
     ) {
-        webhooks {
+        webhook {
           id
           name
           email
@@ -2630,7 +2630,7 @@ mutation {
 
     + Body
 
-            { "query": "mutation { createPipeRelation(input: { pipe_id: 1, name: \"My Integration\", email: \"examepl@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\"Custom-Header\": \"in json format\"}\" }) { webhooks { id, name, email, url, actions, headers } } }" }
+            { "query": "mutation { createPipeRelation(input: { pipe_id: 1, name: \"My Integration\", email: \"examepl@email.com\", url: \"http://example.com/end_point/to/post\", actions: [\"card.create\", \"card.move\"], headers: \"{\"Custom-Header\": \"in json format\"}\" }) { webhook { id, name, email, url, actions, headers } } }" }
 
 + Response 200 (application/json; charset=utf-8)
 
@@ -2677,7 +2677,7 @@ mutation {
       headers: "{\"Custom-Header\": \"in json format\"}"
     }
   ) {
-    webhooks {
+    webhook {
       id
       name
       email
