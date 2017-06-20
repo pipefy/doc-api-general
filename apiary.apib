@@ -30,57 +30,18 @@ Most requests will require the OAuth Token, that must be sent in the request hea
 
 The **personal access token** can be found at the **User Settings** page in [Pipefy](https://app.pipefy.com/tokens)
 
-|HTTP Header      | Header Value              |
-|-----------------|---------------------------|
-|Content-Type     | _application/json_        |
-|**Authorization**|_Bearer <your_personal_access_token>_|
+|    HTTP Header    |              Header Value             |
+|-------------------|---------------------------------------|
+| **Content-Type**  | _application/json_                    |
+| **Authorization** | _Bearer <your_personal_access_token>_ |
 
 **Refs**:
 * [OAuth 2](https://oauth.net/2/)
 * [JWT](https://jwt.io/introduction/)
 
+# Other APIs
 
-# GraphQL Root Queries
-* Me (User info)
-* Organizations (**Optional** parameter: Organizations IDs)
-* Organization (**Required** parameter: Organization ID)
-* Pipes (**Required** parameter: Pipes ID)
-* Pipe (**Required** parameter: Pipe ID)
-* Phase (**Required** parameter: Phase ID)
-* Cards (**Required** parameter: Pipe ID)
-* Card (**Required** parameter: Card ID)
-* Pipe Relations (**Required** parameter: PipeRelation IDs)
-
-# GraphQL Root Mutations
-* Create organization (**Required** parameters: industry, name)
-* Update organization (**Required** parameters: organization id, name)
-* Delete organization (**Required** parameter: organization id)
-* Clone pipe (**Required** parameters: organization id, pipe templates ids)
-* Create pipe (**Required** parameters: organization id, name)
-* Update pipe (**Required** parameters: pipe id, name)
-* Delete pipe (**Required** parameter: pipe id)
-* Create phase (**Required** parameters: pipe id, name)
-* Update phase (**Required** parameters: phase id, name)
-* Delete phase (**Required** parameter: phase id)
-* Create phase field (**Required** parameters: phase id, type id, label, index)
-* Update phase field (**Required** parameters: phase field id, label, index)
-* Delete phase field (**Required** parameter: phase field id)
-* Create label (**Required** parameters: pipe id, name, color)
-* Update label (**Required** parameters: label id, name, color)
-* Delete label (**Required** parameter: label id)
-* Create card (**Required** parameter: pipe id)
-* Update card (**Required** parameter: card id)
-* Delete card (**Required** parameter: card id)
-* Move card to phase (**Required** parameters: card id, destination phase id)
-* Update cardfield (**Required** parameter: card field id)
-* Create comment (**Required** parameters: card id, text)
-* Update comment (**Required** parameters: comment id, text)
-* Delete comment (**Required** parameter: comment id)
-* Set role (**Required** parameter: member's)
-* Create pipe relation (**Required** parameters: name, parent id, child id, can create connected cards, can search connected cards, can connect multiple cards, child must exist to move parent, child must exist to finish parent, all children must be done to move parent, all children must be done to finish parent)
-* Update pipe relation (**Required** parameters: id, name, can create connected cards, can search connected cards, can connect multiple cards, child must exist to move parent, child must exist to finish parent, all children must be done to move parent, all children must be done to finish parent)
-* Delete pipe relation (**Required** parameter: pipe relation id)
-* Create webhook (**Required** parameter: pipe or table relation id, name, url, actions)
+- [Database API](http://docs.pipefydatabase.apiary.io)
 
 ## Me [/queries{?me}]
 
@@ -812,7 +773,6 @@ Get a card by card id, with assignees, child relations, fields ...
                 }
             }
 
-
 ## Pipe Relations [/queries{?pipe_relations}]
 
 Get a list of pipe relations by their ids, with properties and the child name
@@ -903,7 +863,6 @@ Get a list of pipe relations by their ids, with properties and the child name
                     ]
                 }
             }
-
 
 ## Create organization [/queries{?create_organization}]
 
@@ -2369,7 +2328,6 @@ mutation {
                     }
                 }
             }
-            
 
 ## Create pipe relation [/queries{?create_pipe_relation}]
 
@@ -2456,7 +2414,6 @@ mutation {
                     }
                 }
             }
-
 
 ## Update pipe relation [/queries{?update_pipe_relation}]
 
@@ -2650,7 +2607,6 @@ mutation {
                     }
                 }
             }
-
 
 ## Update webhook [/queries{?update_webhook}]
 
