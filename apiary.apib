@@ -46,22 +46,20 @@ The **personal access token** can be found at the **User Settings** page in [Pip
 
 Get information about yourself.
 
-- user:
-    - id
-    - name
-    - username
-    - avatar url
-    - email
-    - locale
-    - time zone
-
 **Request Body**
 
 ```
-{ 
-    query: { 
-        me { id, name, username, avatar_url, email, locale, time_zone }
-    }
+{
+  me {
+    id
+    name
+    username
+    email
+    avatarUrl
+    created_at
+    locale
+    timeZone
+  }
 }
 ```
 
@@ -75,44 +73,68 @@ Get information about yourself.
 
     + Body
 
-            { "query": "{ me { id, name, username, avatar_url, email, locale, time_zone } }" }
+            {
+                "query": "{ me { id name username email avatar_url created_at locale time_zone } }"
+            }
 
 + Response 200 (application/json; charset=utf-8)
 
     + Body
 
             {
-                "data": {
-                    "me": {
-                        "id": 9999,
-                        "name": "Pipefy User",
-                        "username": "pipefy.user",
-                        "avatar_url": "https://avatar-images.pipefy.com/user-avatar.png",
-                        "email": "pipefy.user@pipefy.com",
-                        "locale": "en-US",
-                        "time_zone": "America/Los_Angeles"
-                    }
+              "data": {
+                "me": {
+                  "id": "68310",
+                  "name": "Claudio Furini Jr.",
+                  "username": "claudio.furini",
+                  "email": "claudio.furini@pipefy.com",
+                  "avatarUrl": "https://pipefy-production.s3-sa-east-1.amazonaws.com/avatar/store/user/68310/avatar/small-4b39bc357029daaba28f0691b28e96a5.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJ6QQUS4NUNAOO6IA%2F20170821%2Fsa-east-1%2Fs3%2Faws4_request&X-Amz-Date=20170821T004712Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=31d200c15d62b74d27559a2ccb90398eaf404f3d92e4bed79ab1efa3cb17bd6f",
+                  "created_at": "2017-02-06 10:49:01 -0200",
+                  "locale": "pt-BR",
+                  "timeZone": "America/Sao_Paulo"
                 }
+              }
             }
 
-## Organizations [/queries{?organizations}]
+## List organizations [/queries{?organizations}]
 
-Get the list of Organizations.
-
-- organizations:
-    - id
-    - name
+Get a list of organizations by their identifiers.
 
 **Request Body**
 ```
-{ 
-    query: { 
-        organizations { id, name } 
+{
+  organizations(ids: [65386, 67595]) {
+    name
+    created_at
+    members {
+      user {
+        id
+        name
+      }
+      role_name
     }
+    only_admin_can_create_pipes
+    only_admin_can_invite_users
+    automations {
+      id
+    }
+    pipes(include_publics: true) {
+      id
+      name
+    }
+    tables {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
 }
 ```
 
-### Get organizations [POST]
+### organization(ids: [organization_ids]) [POST]
 
 + Request (application/json)
 
@@ -122,50 +144,196 @@ Get the list of Organizations.
 
     + Body
 
-            { "query": "{ organizations{ id, name} }" }
+            {
+                "query": "{ organizations(ids: [65386, 67595]) { name created_at members { user { id name } role_name } only_admin_can_create_pipes only_admin_can_invite_users automations { id } pipes { id name } tables { edges { node { id name } } } } }"
+            }
 
 + Response 200 (application/json; charset=utf-8)
 
     + Body
 
             {
-                "data": {
-                    "organizations": [
+              "data": {
+                "organizations": [
+                  {
+                    "name": "Pipefy Organization 1",
+                    "created_at": "2017-06-26T16:00:42-03:00",
+                    "members": [
+                      {
+                        "user": {
+                          "id": "91670",
+                          "name": "Peter"
+                        },
+                        "role_name": "normal"
+                      },
+                      {
+                        "user": {
+                          "id": "87021",
+                          "name": "Napoleon"
+                        },
+                        "role_name": "normal"
+                      },
+                      {
+                        "user": {
+                          "id": "83956",
+                          "name": "David"
+                        },
+                        "role_name": "admin"
+                      },
+                      {
+                        "user": {
+                          "id": "68310",
+                          "name": "Claudio Furini"
+                        },
+                        "role_name": "admin"
+                      },
+                      {
+                        "user": {
+                          "id": "77303",
+                          "name": "Pedro"
+                        },
+                        "role_name": "normal"
+                      }
+                    ],
+                    "only_admin_can_create_pipes": false,
+                    "only_admin_can_invite_users": true,
+                    "automations": [
+                      {
+                        "id": "2468"
+                      }
+                    ],
+                    "pipes": [
+                      {
+                        "id": "211269",
+                        "name": "Pipe 1"
+                      },
+                      {
+                        "id": "211270",
+                        "name": "Pipe 2"
+                      },
+                      {
+                        "id": "219739",
+                        "name": "Secret Project"
+                      },
+                      {
+                        "id": "241213",
+                        "name": "General"
+                      },
+                      {
+                        "id": "243585",
+                        "name": "Simple To-do List"
+                      },
+                      {
+                        "id": "243587",
+                        "name": "Sales Pipeline"
+                      }
+                    ],
+                    "tables": {
+                      "edges": [
                         {
-                            "id": "9999",
-                            "name": "Pipefy"
+                          "node": {
+                            "id": "12I_mAHB",
+                            "name": "Companys"
+                          }
+                        },
+                        {
+                          "node": {
+                            "id": "V4MT9cgD",
+                            "name": "Table 1"
+                          }
+                        },
+                        {
+                          "node": {
+                            "id": "InQQ7HK6",
+                            "name": "Cities"
+                          }
                         }
-                    ]
-                }
+                      ]
+                    }
+                  },
+                  {
+                    "name": "Pipefy Organization 2",
+                    "created_at": "2017-07-14T15:47:18-03:00",
+                    "members": [
+                      {
+                        "user": {
+                          "id": "68310",
+                          "name": "Claudio Furini Jr."
+                        },
+                        "role_name": "admin"
+                      }
+                    ],
+                    "only_admin_can_create_pipes": false,
+                    "only_admin_can_invite_users": false,
+                    "automations": [
+                      {
+                        "id": "2068"
+                      },
+                      {
+                        "id": "2093"
+                      },
+                      {
+                        "id": "2066"
+                      }
+                    ],
+                    "pipes": [
+                      {
+                        "id": "235094",
+                        "name": "Vacation Requests"
+                      },
+                      {
+                        "id": "235095",
+                        "name": "HR"
+                      }
+                    ],
+                    "tables": {
+                      "edges": []
+                    }
+                  }
+                ]
+              }
             }
 
-## Organization [/queries{?organization}]
+## Show organization [/queries{?organization}]
 
-Get an organization by organization id, with pipes and phases.
+Get an organization by its identifier.
 
-- organization:
-    - name
-    - pipes:
-        - name
-        - phases:
-            - name
 
 **Request Body**
 ```
-{ 
-    query: { 
-        organization(id: 9999) { 
-            name
-            pipes { 
-                name
-                phases { name } 
-            } 
-        } 
-    } 
+{
+  organization(id: 65386) {
+    name
+    created_at
+    members {
+      user {
+        id
+        name
+      }
+      role_name
+    }
+    only_admin_can_create_pipes
+    only_admin_can_invite_users
+    automations {
+      id
+    }
+    pipes {
+      id
+      name
+    }
+    tables {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+  }
 }
 ```
 
-### Get organization by id [POST]
+### organization(id: organization_id) [POST]
 
 + Request (application/json)
 
@@ -175,72 +343,124 @@ Get an organization by organization id, with pipes and phases.
 
     + Body
 
-            { "query": "{ organization(id: 1){ name, pipes { name, phases { name } } } }" }
+            {
+                "query": "{ organization(id: 65386){ name created_at members { user { id name } role_name } only_admin_can_create_pipes only_admin_can_invite_users automations { id } pipes { id name } tables { edges { node { id name } } } } }"
+            }
 
 + Response 200 (application/json; charset=utf-8)
 
     + Body
 
             {
-                "data": {
-                    "organization": {
-                        "name": "Pipefy",
-                        "pipes": [
-                            {
-                                "name": "Developers Team",
-                                "phases": [
-                                    {
-                                        "name": "ToDo"
-                                    },
-                                    {
-                                        "name": "Doing"
-                                    },
-                                    {
-                                        "name": "Done"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "Sales Team",
-                                "phases": [
-                                    {
-                                        "name": "To-do"
-                                    },
-                                    {
-                                        "name": "Doing"
-                                    },
-                                    {
-                                        "name": "Done"
-                                    }
-                                ]
-                            }
-                        ]
+              "data": {
+                "organization": {
+                  "name": "Pipefy Support ",
+                  "created_at": "2017-06-26T16:00:42-03:00",
+                  "members": [
+                    {
+                      "user": {
+                        "id": "77303",
+                        "name": "Peter"
+                      },
+                      "role_name": "normal"
+                    },
+                    {
+                      "user": {
+                        "id": "87021",
+                        "name": "Napoleon"
+                      },
+                      "role_name": "normal"
+                    },
+                    {
+                      "user": {
+                        "id": "68310",
+                        "name": "Claudio Furini Jr."
+                      },
+                      "role_name": "admin"
                     }
+                  ],
+                  "only_admin_can_create_pipes": false,
+                  "only_admin_can_invite_users": true,
+                  "automations": [
+                    {
+                      "id": "2468"
+                    }
+                  ],
+                  "pipes": [
+                    {
+                      "id": "211269",
+                      "name": "Pipe 1"
+                    },
+                    {
+                      "id": "211270",
+                      "name": "Pipe 2"
+                    },
+                    {
+                      "id": "219739",
+                      "name": "Secret Project"
+                    },
+                    {
+                      "id": "241213",
+                      "name": "General"
+                    },
+                    {
+                      "id": "243585",
+                      "name": "Simple To-do List"
+                    },
+                    {
+                      "id": "243587",
+                      "name": "Sales Pipeline"
+                    }
+                  ],
+                  "tables": {
+                    "edges": [
+                      {
+                        "node": {
+                          "id": "12I_mAHB",
+                          "name": "Company"
+                        }
+                      },
+                      {
+                        "node": {
+                          "id": "V4MT9cgD",
+                          "name": "Table 2"
+                        }
+                      },
+                      {
+                        "node": {
+                          "id": "InQQ7HK6",
+                          "name": "Cities"
+                        }
+                      }
+                    ]
+                  }
                 }
+              }
             }
 
 ## Create organization [/queries{?create_organization}]
 
 Mutation to create a organization, in case of success a query is returned.
 
-- organization's parameters:
-    - industry
-    - name
-
 **Request Body**
 
 ```
-mutation { 
-    createOrganization(input: {industry: "technology", name: "Oscorp"}){
-        organization{ 
-            id
-            name
-        }
+mutation {
+  createOrganization(
+    input: {
+      industry: "technology"
+      name: "Oscorp"
     }
+  ) {
+    organization {
+      id
+      name
+    }
+  }
 }
 ```
 
-### createOrganization(input: params) [POST]
+### createOrganization(input: {params}) [POST]
 
 + Request (application/json)
 
@@ -250,56 +470,50 @@ mutation {
 
     + Body
 
-            { "query": "mutation { createOrganization(input: {industry: \"technology\", name: \"Oscorp\"}){ organization{ id, name } } }" }
+            {
+                "query": "mutation { createOrganization(input: {industry: \"technology\", name: \"Oscorp\" }) { organization{ id, name } } }"
+            }
 
 + Response 200 (application/json; charset=utf-8)
 
     + Body
 
             {
-                "data": {
-                    "createOrganization": {
-                        "organization": {
-                            "id": "1",
-                            "name": "Oscorp"
-                        }
-                    }
+              "data": {
+                "createOrganization": {
+                  "organization": {
+                    "id": "73659",
+                    "name": "Oscorp"
+                  }
                 }
+              }
             }
 
 ## Update organization [/queries{?update_organization}]
 
 Mutation to update a organization, in case of success a query is returned.
 
-- organization's parameters:
-    - organization id
-    - name
-    - only admin can invite users
-    - only admin can create pipes
-    - force omniauth to normal users
-
 **Request Body**
 ```
-mutation{
-    updateOrganization(
-        input: {
-            id: 5, 
-            name: "Capsule Corp.", 
-            only_admin_can_invite_users: true 
-        }
-    ) 
-    {
-        organization{
-            name
-            only_admin_can_create_pipes
-            only_admin_can_invite_users
-            force_omniauth_to_normal_users
-        }
+mutation {
+  updateOrganization(
+    input: {
+      id: 73659
+      name: "Capsule Corp."
+      only_admin_can_invite_users: true
+      only_admin_can_create_pipes: false
+      force_omniauth_to_normal_users: true
     }
+  ) {
+    organization {
+      id
+      name
+    }
+  }
 }
 ```
 
-### updateOrganization(input: params) [POST]
+### updateOrganization(input: {params}) [POST]
 
 + Request (application/json)
 
@@ -309,42 +523,39 @@ mutation{
 
     + Body
 
-            { "query": "mutation{ updateOrganization(input:{id: 5, name: \"Capsule Corp.\", only_admin_can_invite_users: true }) { organization{ name, only_admin_can_create_pipes, only_admin_can_invite_users, force_omniauth_to_normal_users } } }" }
+            {
+                "query": "mutation{ updateOrganization(input: {id: 73659 name: \"Capsule Corp.\" only_admin_can_invite_users: true only_admin_can_create_pipes: false force_omniauth_to_normal_users: true }) { organization { id name } } }"
+            }
             
 + Response 200 (application/json; charset=utf-8)
     
     + Body
     
             {
-                "data": {
-                    "updateOrganization": {
-                        "organization": {
-                            "name": "Capsule Corp.",
-                            "only_admin_can_create_pipes": false,
-                            "only_admin_can_invite_users": true,
-                            "force_omniauth_to_normal_users": null
-                        }
-                    }
+              "data": {
+                "updateOrganization": {
+                  "organization": {
+                    "id": "73659",
+                    "name": "Capsule Corp."
+                  }
                 }
+              }
             }
 
 ## Delete organization [/queries{?delete_organization}]
 
-Mutation to delete an organization, in case of success a query is returned.
-
-- parameter:
-    - organization id
+Mutation to delete an organization, in case of success `success: true` is returned.
 
 **Request Body**
 ```
 mutation {
-    deleteOrganization(input: {id: 1}) {
-        success
-    }
+  deleteOrganization(input: {id: 73659}) {
+    success
+  }
 }
 ```
 
-### deleteOrganization(input: id) [POST]
+### deleteOrganization(input: {organization_id}) [POST]
 
 + Request (application/json)
 
@@ -354,20 +565,20 @@ mutation {
 
     + Body
 
-            { "query": "mutation { deleteOrganization(input: {id: 1}) { success } }" }
+            {
+                "query": "mutation { deleteOrganization(input: {id: 73659}) { success } }"
+            }
             
 + Response 200 (application/json; charset=utf-8)
     
     + Body
     
             {
-                "data": {
-                     "deleteOrganization": {
-                        "card": {
-                            "success": true
-                        }
-                    }
+              "data": {
+                "deleteOrganization": {
+                  "success": true
                 }
+              }
             }
 
 ## Create webhook [/queries{?create_webhook}]
