@@ -116,9 +116,6 @@ Get a list of organizations by their identifiers.
     }
     only_admin_can_create_pipes
     only_admin_can_invite_users
-    automations {
-      id
-    }
     pipes(include_publics: true) {
       id
       name
@@ -146,7 +143,7 @@ Get a list of organizations by their identifiers.
     + Body
 
             {
-                "query": "{ organizations(ids: [65386, 67595]) { name created_at members { user { id name } role_name } only_admin_can_create_pipes only_admin_can_invite_users automations { id } pipes { id name } tables { edges { node { id name } } } } }"
+                "query": "{ organizations(ids: [65386, 67595]) { name created_at members { user { id name } role_name } only_admin_can_create_pipes only_admin_can_invite_users pipes { id name } tables { edges { node { id name } } } } }"
             }
 
 + Response 200 (application/json; charset=utf-8)
@@ -198,11 +195,6 @@ Get a list of organizations by their identifiers.
                     ],
                     "only_admin_can_create_pipes": false,
                     "only_admin_can_invite_users": true,
-                    "automations": [
-                      {
-                        "id": "2468"
-                      }
-                    ],
                     "pipes": [
                       {
                         "id": "211269",
@@ -315,9 +307,6 @@ Get an organization by its identifier.
     }
     only_admin_can_create_pipes
     only_admin_can_invite_users
-    automations {
-      id
-    }
     pipes {
       id
       name
@@ -345,7 +334,7 @@ Get an organization by its identifier.
     + Body
 
             {
-                "query": "{ organization(id: 65386){ name created_at members { user { id name } role_name } only_admin_can_create_pipes only_admin_can_invite_users automations { id } pipes { id name } tables { edges { node { id name } } } } }"
+                "query": "{ organization(id: 65386){ name created_at members { user { id name } role_name } only_admin_can_create_pipes only_admin_can_invite_users pipes { id name } tables { edges { node { id name } } } } }"
             }
 
 + Response 200 (application/json; charset=utf-8)
@@ -382,11 +371,6 @@ Get an organization by its identifier.
                   ],
                   "only_admin_can_create_pipes": false,
                   "only_admin_can_invite_users": true,
-                  "automations": [
-                    {
-                      "id": "2468"
-                    }
-                  ],
                   "pipes": [
                     {
                       "id": "211269",
